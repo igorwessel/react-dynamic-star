@@ -1,0 +1,12 @@
+.star-rating {
+  display: flex;
+  align-items: center;
+}
+
+.star-container {
+  display: flex;
+}
+
+.star-container:not(:last-child) {
+  margin-right: 5px;
+}
