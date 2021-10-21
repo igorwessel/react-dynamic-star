@@ -26,39 +26,44 @@ function DynamicStar<T> ({
   const styleStarHeight = 100
   const styleEmptyStarColor = '#737373'
   const styleFullStarColor = '#ed8a19'
-  const fullStarsCounter = Math.floor(rating)
+
   const surplus = Math.round((rating % 1) * 10) / 10
   const roundedOneDecimalPoint = Math.round(surplus * 10) / 10
+
   const calcStarFullness = React.useCallback(
     (starData: IStar) => starData.raw * 100 + '%',
     [],
   )
 
-  const [stars, setStars] = React.useState<IStar[]>(Array(totalStars).fill({ raw: emptyStar, percent: emptyStar + '%' }))
-
-  const getFullFillColor = (starData: IStar) => starData.raw !== emptyStar ? styleFullStarColor : styleEmptyStarColor
-
-  const calcStarPoints = React.useCallback(
-    (centerX, centerY, innerCircleArms, innerRadius, outerRadius) => {
-      const angle = Math.PI / innerCircleArms
-      const angleOffsetToCenterStar = 60
-      const totalArms = innerCircleArms * 2
-      let points = ''
-      for (let i = 0; i < totalArms; i++) {
-        const isEvenIndex = i % 2 === 0
-        const r = isEvenIndex ? outerRadius : innerRadius
-        const currX =
-          centerX + Math.cos(i * angle + angleOffsetToCenterStar) * r
-        const currY =
-          centerY + Math.sin(i * angle + angleOffsetToCenterStar) * r
-        points += currX + ',' + currY + ' '
-      }
-      return points
-    },
-    [],
+  const [stars, setStars] = React.useState<IStar[]>(
+    Array(totalStars).fill({ raw: emptyStar, percent: emptyStar + '%' }),
   )
 
-  const getStarPoints = React.useCallback(() => {
+  const getFullFillColor = (starData: IStar) =>
+    starData.raw !== emptyStar ? styleFullStarColor : styleEmptyStarColor
+
+  const calcStarPoints = (
+    centerX: number,
+    centerY: number,
+    innerCircleArms: number,
+    innerRadius: number,
+    outerRadius: number,
+  ) => {
+    const angle = Math.PI / innerCircleArms
+    const angleOffsetToCenterStar = 60
+    const totalArms = innerCircleArms * 2
+    let points = ''
+    for (let i = 0; i < totalArms; i++) {
+      const isEvenIndex = i % 2 === 0
+      const r = isEvenIndex ? outerRadius : innerRadius
+      const currX = centerX + Math.cos(i * angle + angleOffsetToCenterStar) * r
+      const currY = centerY + Math.sin(i * angle + angleOffsetToCenterStar) * r
+      points += currX + ',' + currY + ' '
+    }
+    return points
+  }
+
+  const getStarPoints = () => {
     const centerX = styleStarWidth / 2
     const centerY = styleStarWidth / 2
     const innerCircleArms = 5 // a 5 arms star
@@ -72,17 +77,33 @@ function DynamicStar<T> ({
       innerRadius,
       outerRadius,
     )
-  }, [styleStarWidth, calcStarPoints])
+  }
 
   React.useEffect(() => {
+    const fullStarsCounter = Math.floor(rating)
+
     setStars((prevState) =>
       prevState.map((star, index) =>
         fullStarsCounter >= index + 1
-          ? { raw: fullStar, percent: calcStarFullness(star) }
-          : { raw: roundedOneDecimalPoint, percent: calcStarFullness(star) },
+          ? {
+              raw: fullStar,
+              percent: calcStarFullness({ ...star, raw: fullStar }),
+            }
+          : rating === index + roundedOneDecimalPoint
+            ? {
+                raw: roundedOneDecimalPoint,
+                percent: calcStarFullness({
+                  ...star,
+                  raw: roundedOneDecimalPoint,
+                }),
+              }
+            : {
+                raw: emptyStar,
+                percent: emptyStar + '%',
+              },
       ),
     )
-  }, [calcStarFullness, fullStarsCounter, roundedOneDecimalPoint])
+  }, [calcStarFullness, rating, roundedOneDecimalPoint])
 
   return (
     <div className='star-rating' aria-label={`${rating} of 5`}>
@@ -98,7 +119,7 @@ function DynamicStar<T> ({
             }}
             aria-hidden='true'
           >
-            <polygon points={getStarPoints()} style={{ fillRule: 'nonzero' }} />
+            <polygon points={getStarPoints()} fillRule='nonzero' />
             <defs>
               {/* id has to be unique to each star fullness(dynamic offset) - it indicates fullness above */}
               <linearGradient id={`gradient${star.raw}`}>
