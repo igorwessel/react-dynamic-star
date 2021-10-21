@@ -2,10 +2,13 @@ import * as React from 'react'
 import { useId } from '@/utils/hooks/useId'
 import './style.css'
 
-type IDynamicStarProps<Style> = {
+type IDynamicStarProps = {
   rating: number;
-  starStyle?: React.StyleHTMLAttributes<Style>;
-  isIndicatorActive?: boolean;
+  totalStars?: number;
+  width?: number;
+  height?: number;
+  emptyStarColor?: string;
+  fullStarColor?: string;
 };
 
 type IStar = {
@@ -13,19 +16,17 @@ type IStar = {
   percent: string;
 };
 
-function DynamicStar<T> ({
+function DynamicStar ({
   rating,
-  starStyle,
-  isIndicatorActive,
-}: IDynamicStarProps<T>) {
+  totalStars = 5,
+  width = 100,
+  height = 100,
+  emptyStarColor = '#737373',
+  fullStarColor = '#ed8a19',
+}: IDynamicStarProps) {
   const id = useId('star')
   const emptyStar = 0
   const fullStar = 1
-  const totalStars = 5
-  const styleStarWidth = 100
-  const styleStarHeight = 100
-  const styleEmptyStarColor = '#737373'
-  const styleFullStarColor = '#ed8a19'
 
   const surplus = Math.round((rating % 1) * 10) / 10
   const roundedOneDecimalPoint = Math.round(surplus * 10) / 10
@@ -40,7 +41,7 @@ function DynamicStar<T> ({
   )
 
   const getFullFillColor = (starData: IStar) =>
-    starData.raw !== emptyStar ? styleFullStarColor : styleEmptyStarColor
+    starData.raw !== emptyStar ? fullStarColor : emptyStarColor
 
   const calcStarPoints = (
     centerX: number,
@@ -64,10 +65,10 @@ function DynamicStar<T> ({
   }
 
   const getStarPoints = () => {
-    const centerX = styleStarWidth / 2
-    const centerY = styleStarWidth / 2
+    const centerX = width / 2
+    const centerY = width / 2
     const innerCircleArms = 5 // a 5 arms star
-    const innerRadius = styleStarWidth / innerCircleArms
+    const innerRadius = width / innerCircleArms
     const innerOuterRadiusRatio = 2.5 // Unique value - determines fatness/sharpness of star
     const outerRadius = innerRadius * innerOuterRadiusRatio
     return calcStarPoints(
@@ -78,6 +79,17 @@ function DynamicStar<T> ({
       outerRadius,
     )
   }
+
+  React.useEffect(() => {
+    if (totalStars - stars.length >= 0) {
+      setStars((prevState) => [
+        ...prevState,
+        ...Array(totalStars - prevState.length).fill({ raw: emptyStar, percent: emptyStar + '%' }),
+      ])
+    } else {
+      setStars((prevState) => prevState.filter((item, index) => index <= totalStars - stars.length || item.raw === fullStar))
+    }
+  }, [totalStars, stars.length])
 
   React.useEffect(() => {
     const fullStarsCounter = Math.floor(rating)
@@ -113,9 +125,8 @@ function DynamicStar<T> ({
             className='star-svg'
             style={{
               fill: `url(#gradient${star.raw})`,
-              width: styleStarWidth,
-              height: styleStarHeight,
-              ...starStyle,
+              width,
+              height,
             }}
             aria-hidden='true'
           >
@@ -139,20 +150,19 @@ function DynamicStar<T> ({
                   id='stop3'
                   offset={star.percent}
                   stopOpacity='1'
-                  stopColor={styleEmptyStarColor}
+                  stopColor={emptyStarColor}
                 />
                 <stop
                   id='stop4'
                   offset='100%'
                   stopOpacity='1'
-                  stopColor={styleEmptyStarColor}
+                  stopColor={emptyStarColor}
                 />
               </linearGradient>
             </defs>
           </svg>
         </div>
       ))}
-      {isIndicatorActive && <div className='indicator'>{rating}</div>}
     </div>
   )
 }
