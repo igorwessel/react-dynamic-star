@@ -9,7 +9,7 @@ This component is a port of an open-source component made in vue, you can access
 
 ![Outlined](https://github.com/igorwessel/react-dynamic-star/blob/mainoutlined_dynamic_star "Outlined")
 
-# Docs
+# Props
 
 | Property | Type  | Description | Default
 | --- | ---  | --- | --- |
