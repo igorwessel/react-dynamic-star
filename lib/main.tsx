@@ -130,7 +130,7 @@ function DynamicStar ({
           <svg
             className='star-svg'
             style={{
-              fill: `url(#gradient${star.raw})`,
+              fill: `url(#${id}_gradient${star.raw})`,
               stroke:
                   typeof outlined === 'string'
                     ? outlined
@@ -146,7 +146,7 @@ function DynamicStar ({
             <polygon points={getStarPoints()} fillRule='nonzero' />
             <defs>
               {/* id has to be unique to each star fullness(dynamic offset) - it indicates fullness above */}
-              <linearGradient id={`gradient${star.raw}`}>
+              <linearGradient id={`${id}_gradient${star.raw}`}>
                 <stop
                   id='stop1'
                   offset={star.percent}
