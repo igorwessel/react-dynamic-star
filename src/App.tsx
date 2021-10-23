@@ -5,6 +5,8 @@ import { DynamicStar } from 'react-dynamic-star'
 function App () {
   return (
     <div className='App'>
+      <p>Full</p>
+      <DynamicStar rating={2.1} />
       <p>Outlined</p>
       <DynamicStar outlined rating={2.1} />
       <p>Outlined with custom outline width</p>
