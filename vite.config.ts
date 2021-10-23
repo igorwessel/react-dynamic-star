@@ -17,8 +17,8 @@ export default defineConfig((configEnv) => ({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'lib/main.tsx'),
-      name: 'ReactJSON',
-      fileName: (format) => `rj.${format}.js`,
+      name: 'ReactDynamicStar',
+      fileName: (format) => `rds.${format}.js`,
     },
     rollupOptions: {
       external: ['react'],
