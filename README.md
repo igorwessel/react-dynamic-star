@@ -1,7 +1,7 @@
 # React Dynamic Star
 
 A Highly Customizable, easy-to-use elegant stars rating component.
-This component is a port of an open-source component made in vue.
+This component is a port of an open-source component made in vue, you can access the repo in **[Vue Star Rating](https://github.com/JonathanDn/vue-stars-rating)**.
 
 # Demo
 
