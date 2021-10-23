@@ -115,6 +115,44 @@ describe('Passing optional props', () => {
     expect(container.querySelectorAll('.star-svg')).toHaveLength(7)
   })
 
+  test('should outlined a star when pass outlined', () => {
+    const { container } = render(
+      <DynamicStar rating={5} outlined />,
+    )
+
+    const stars = container.querySelectorAll('.star-svg')
+
+    stars.forEach((star) => {
+      expect(star).toHaveAttribute('style', expect.not.stringMatching(/stroke: none/))
+    })
+  })
+
+  test("should use outlined color, when pass outlined with a color (outlined='black')", () => {
+    const { container } = render(<DynamicStar rating={5} outlined='black' />)
+
+    const stars = container.querySelectorAll('.star-svg')
+
+    stars.forEach((star) => {
+      expect(star).toHaveAttribute(
+        'style',
+        expect.stringMatching(/stroke: black/),
+      )
+    })
+  })
+
+  test('should change outline width, when pass outlineWidth', () => {
+    const { container } = render(<DynamicStar rating={5} outlined='black' outlineWidth={2} />)
+
+    const stars = container.querySelectorAll('.star-svg')
+
+    stars.forEach((star) => {
+      expect(star).toHaveAttribute(
+        'style',
+        expect.stringMatching(/stroke-width: 2/),
+      )
+    })
+  })
+
   test('when rerender with new totalStars, need to render all stars', () => {
     const { container, rerender } = render(<DynamicStar rating={6.5} totalStars={7} />)
 

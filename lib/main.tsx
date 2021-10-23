@@ -1,9 +1,12 @@
 import * as React from 'react'
-import { useId } from '@/utils/hooks/useId'
+import { useId } from '@/hooks/useId'
 import './style.css'
 
 type IDynamicStarProps = {
   rating: number;
+  outlined?: string | boolean;
+  outlineWidth?: number;
+  sharpnessStar?: number;
   totalStars?: number;
   width?: number;
   height?: number;
@@ -18,11 +21,14 @@ type IStar = {
 
 function DynamicStar ({
   rating,
+  outlined,
+  outlineWidth,
+  sharpnessStar = 2.5,
   totalStars = 5,
   width = 100,
   height = 100,
-  emptyStarColor = '#737373',
-  fullStarColor = '#ed8a19',
+  emptyStarColor = 'transparent',
+  fullStarColor = '#FFBC00',
 }: IDynamicStarProps) {
   const id = useId('star')
   const emptyStar = 0
@@ -67,9 +73,9 @@ function DynamicStar ({
   const getStarPoints = () => {
     const centerX = width / 2
     const centerY = width / 2
-    const innerCircleArms = 5 // a 5 arms star
+    const innerCircleArms = 5
     const innerRadius = width / innerCircleArms
-    const innerOuterRadiusRatio = 2.5 // Unique value - determines fatness/sharpness of star
+    const innerOuterRadiusRatio = sharpnessStar
     const outerRadius = innerRadius * innerOuterRadiusRatio
     return calcStarPoints(
       centerX,
@@ -125,6 +131,13 @@ function DynamicStar ({
             className='star-svg'
             style={{
               fill: `url(#gradient${star.raw})`,
+              stroke:
+                  typeof outlined === 'string'
+                    ? outlined
+                    : outlined
+                      ? fullStarColor
+                      : 'none',
+              strokeWidth: outlineWidth ?? 'unset',
               width,
               height,
             }}
