@@ -33,9 +33,9 @@ function DynamicStar ({
   const id = useId('star')
   const emptyStar = 0
   const fullStar = 1
-
+  const createEmptyStar = React.useCallback(() => ({ raw: emptyStar, percent: emptyStar + '% ' }), [])
   const [stars, setStars] = React.useState<IStar[]>(
-    Array(totalStars).fill({ raw: emptyStar, percent: emptyStar + '%' }),
+    Array(totalStars).fill(createEmptyStar()),
   )
 
   const getFullFillColor = (starData: IStar) =>
@@ -96,13 +96,10 @@ function DynamicStar ({
     if (totalStars - stars.length > 0) {
       setStars((prevState) => [
         ...prevState,
-        ...Array(totalStars - prevState.length).fill({
-          raw: emptyStar,
-          percent: emptyStar + '%',
-        }),
+        ...Array(totalStars - prevState.length).fill(createEmptyStar()),
       ])
     }
-  }, [totalStars, stars.length])
+  }, [totalStars, stars.length, createEmptyStar])
 
   /**
    * Responsible to fill stars
@@ -129,13 +126,10 @@ function DynamicStar ({
                   raw: roundedOneDecimalPoint,
                 }),
               }
-            : {
-                raw: emptyStar,
-                percent: emptyStar + '%',
-              },
+            : createEmptyStar(),
       ),
     )
-  }, [rating, stars.length])
+  }, [rating, stars.length, createEmptyStar])
 
   return (
     <div className='star-rating' aria-label={`${rating} of 5`}>
