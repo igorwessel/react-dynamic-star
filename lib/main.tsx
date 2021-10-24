@@ -34,14 +34,6 @@ function DynamicStar ({
   const emptyStar = 0
   const fullStar = 1
 
-  const surplus = Math.round((rating % 1) * 10) / 10
-  const roundedOneDecimalPoint = Math.round(surplus * 10) / 10
-
-  const calcStarFullness = React.useCallback(
-    (starData: IStar) => starData.raw * 100 + '%',
-    [],
-  )
-
   const [stars, setStars] = React.useState<IStar[]>(
     Array(totalStars).fill({ raw: emptyStar, percent: emptyStar + '%' }),
   )
@@ -86,19 +78,41 @@ function DynamicStar ({
     )
   }
 
+  /**
+   * Responsible to remove a star when star count changes.
+   */
   React.useEffect(() => {
-    if (totalStars - stars.length >= 0) {
-      setStars((prevState) => [
-        ...prevState,
-        ...Array(totalStars - prevState.length).fill({ raw: emptyStar, percent: emptyStar + '%' }),
-      ])
-    } else {
-      setStars((prevState) => prevState.filter((item, index) => index <= totalStars - stars.length || item.raw === fullStar))
+    const removeStars = totalStars - stars.length
+
+    if (totalStars - stars.length < 0) {
+      setStars((prevState) => [...prevState.slice(0, removeStars)])
     }
   }, [totalStars, stars.length])
 
+  /**
+   * Responsible to add a new star when star count changes.
+   */
+  React.useEffect(() => {
+    if (totalStars - stars.length > 0) {
+      setStars((prevState) => [
+        ...prevState,
+        ...Array(totalStars - prevState.length).fill({
+          raw: emptyStar,
+          percent: emptyStar + '%',
+        }),
+      ])
+    }
+  }, [totalStars, stars.length])
+
+  /**
+   * Responsible to fill stars
+   */
   React.useEffect(() => {
     const fullStarsCounter = Math.floor(rating)
+
+    const surplus = Math.round((rating % 1) * 10) / 10
+    const roundedOneDecimalPoint = Math.round(surplus * 10) / 10
+    const calcStarFullness = (starData: IStar) => starData.raw * 100 + '%'
 
     setStars((prevState) =>
       prevState.map((star, index) =>
@@ -121,7 +135,7 @@ function DynamicStar ({
               },
       ),
     )
-  }, [calcStarFullness, rating, roundedOneDecimalPoint])
+  }, [rating, stars.length])
 
   return (
     <div className='star-rating' aria-label={`${rating} of 5`}>
@@ -132,11 +146,11 @@ function DynamicStar ({
             style={{
               fill: `url(#${id}_gradient${star.raw})`,
               stroke:
-                  typeof outlined === 'string'
-                    ? outlined
-                    : outlined
-                      ? fullStarColor
-                      : 'none',
+                typeof outlined === 'string'
+                  ? outlined
+                  : outlined
+                    ? fullStarColor
+                    : 'none',
               strokeWidth: outlineWidth ?? 'unset',
               width,
               height,
