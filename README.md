@@ -5,9 +5,9 @@ This component is a port of an open-source component made in vue, you can access
 
 # Demo
 
-![Full](https://github.com/igorwessel/react-dynamic-star/blob/mainfull_dynamic_star.png "Full")
+![Full](https://github.com/igorwessel/react-dynamic-star/blob/main/src/assets/full_dynamic_star.png "Full")
 
-![Outlined](https://github.com/igorwessel/react-dynamic-star/blob/mainoutlined_dynamic_star "Outlined")
+![Outlined](https://github.com/igorwessel/react-dynamic-star/blob/main/src/assets/outlined_dynamic_star.png "Outlined")
 
 # Props
 
