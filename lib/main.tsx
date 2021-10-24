@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useId } from '@/hooks/useId'
+import { createEmptyStar, emptyStar, createFullStar, createStarWithPercentageFilled } from '@/utils'
 import './style.css'
 
 type IDynamicStarProps = {
@@ -31,9 +32,6 @@ function DynamicStar ({
   fullStarColor = '#FFBC00',
 }: IDynamicStarProps) {
   const id = useId('star')
-  const emptyStar = 0
-  const fullStar = 1
-  const createEmptyStar = React.useCallback(() => ({ raw: emptyStar, percent: emptyStar + '% ' }), [])
   const [stars, setStars] = React.useState<IStar[]>(
     Array(totalStars).fill(createEmptyStar()),
   )
@@ -99,7 +97,7 @@ function DynamicStar ({
         ...Array(totalStars - prevState.length).fill(createEmptyStar()),
       ])
     }
-  }, [totalStars, stars.length, createEmptyStar])
+  }, [totalStars, stars.length])
 
   /**
    * Responsible to fill stars
@@ -109,27 +107,17 @@ function DynamicStar ({
 
     const surplus = Math.round((rating % 1) * 10) / 10
     const roundedOneDecimalPoint = Math.round(surplus * 10) / 10
-    const calcStarFullness = (starData: IStar) => starData.raw * 100 + '%'
 
     setStars((prevState) =>
-      prevState.map((star, index) =>
+      prevState.map((_, index) =>
         fullStarsCounter >= index + 1
-          ? {
-              raw: fullStar,
-              percent: calcStarFullness({ ...star, raw: fullStar }),
-            }
+          ? createFullStar()
           : rating === index + roundedOneDecimalPoint
-            ? {
-                raw: roundedOneDecimalPoint,
-                percent: calcStarFullness({
-                  ...star,
-                  raw: roundedOneDecimalPoint,
-                }),
-              }
+            ? createStarWithPercentageFilled(roundedOneDecimalPoint)
             : createEmptyStar(),
       ),
     )
-  }, [rating, stars.length, createEmptyStar])
+  }, [rating, stars.length])
 
   return (
     <div className='star-rating' aria-label={`${rating} of 5`}>
