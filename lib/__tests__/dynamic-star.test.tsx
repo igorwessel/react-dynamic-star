@@ -16,7 +16,7 @@ describe('Without pass props optional props', () => {
     stars.forEach((star) => {
       expect(star).toHaveAttribute(
         'style',
-        expect.stringMatching(/url\(#gradient1\)/),
+        expect.stringMatching(/url\(#star_\d+_gradient1\)/),
       )
     })
   })
@@ -29,23 +29,23 @@ describe('Without pass props optional props', () => {
 
     expect(stars[0]).toHaveAttribute(
       'style',
-      expect.stringMatching(/url\(#gradient1\)/),
+      expect.stringMatching(/url\(#star_\d+_gradient1\)/),
     )
     expect(stars[1]).toHaveAttribute(
       'style',
-      expect.stringMatching(/url\(#gradient1\)/),
+      expect.stringMatching(/url\(#star_\d+_gradient1\)/),
     )
     expect(stars[2]).toHaveAttribute(
       'style',
-      expect.stringMatching(/url\(#gradient0.5\)/),
+      expect.stringMatching(/url\(#star_\d+_gradient0.5\)/),
     )
     expect(stars[3]).toHaveAttribute(
       'style',
-      expect.stringMatching(/url\(#gradient0\)/),
+      expect.stringMatching(/url\(#star_\d+_gradient0\)/),
     )
     expect(stars[4]).toHaveAttribute(
       'style',
-      expect.stringMatching(/url\(#gradient0\)/),
+      expect.stringMatching(/url\(#star_\d+_gradient0\)/),
     )
   })
 
@@ -57,7 +57,7 @@ describe('Without pass props optional props', () => {
     stars.forEach((star) => {
       expect(star).toHaveAttribute(
         'style',
-        expect.stringMatching(/url\(#gradient0\)/),
+        expect.stringMatching(/url\(#star_\d+_gradient0\)/),
       )
     })
 
@@ -66,7 +66,7 @@ describe('Without pass props optional props', () => {
     stars.forEach((star) => {
       expect(star).toHaveAttribute(
         'style',
-        expect.stringMatching(/url\(#gradient1\)/),
+        expect.stringMatching(/url\(#star_\d+_gradient1\)/),
       )
     })
   })
@@ -76,14 +76,14 @@ describe('Passing optional props', () => {
   test('should change color for empty and filled star', () => {
     const { container } = render(<DynamicStar rating={1} emptyStarColor='white' fullStarColor='black' />)
 
-    const linearGradientsEmpty = container.querySelectorAll("[id='gradient0'] > stop")
+    const linearGradientsEmpty = container.querySelectorAll("[id='star_5_gradient0'] > stop")
 
     linearGradientsEmpty.forEach((element) => {
       expect(element).toHaveAttribute('stop-color', 'white')
     })
 
     const linearGradientsFull = container.querySelectorAll(
-      "[id='gradient1'] > stop",
+      "[id='star_5_gradient1'] > stop",
     )
 
     expect(linearGradientsFull[0]).toHaveAttribute('stop-color', 'black')
@@ -153,7 +153,7 @@ describe('Passing optional props', () => {
     })
   })
 
-  test('when rerender with new totalStars, need to render all stars', () => {
+  test('when rerender with new totalStars, need to render all stars (removing or adding)', () => {
     const { container, rerender } = render(<DynamicStar rating={6.5} totalStars={7} />)
 
     expect(container.querySelectorAll('.star-svg')).toHaveLength(7)
@@ -161,5 +161,9 @@ describe('Passing optional props', () => {
     rerender(<DynamicStar rating={3} totalStars={6} />)
 
     expect(container.querySelectorAll('.star-svg')).toHaveLength(6)
+
+    rerender(<DynamicStar rating={3} totalStars={8} />)
+
+    expect(container.querySelectorAll('.star-svg')).toHaveLength(8)
   })
 })

@@ -9,5 +9,5 @@ export const useId = (prefix?: string) => {
     setId(++counter)
   }, [])
 
-  return React.useMemo(() => `${prefix ? prefix + '_' : prefix}${id}`, [prefix, id])
+  return React.useMemo(() => `${prefix ? prefix + '_' : ''}${id}`, [prefix, id])
 }
