@@ -1,24 +1,8 @@
 import * as React from 'react'
 import { useId } from '@/hooks/useId'
+import { IDynamicStarProps, IStar } from '@/types'
 import { createEmptyStar, emptyStar, createFullStar, createStarWithPercentageFilled } from '@/utils'
 import './style.css'
-
-type IDynamicStarProps = {
-  rating: number;
-  outlined?: string | boolean;
-  outlineWidth?: number;
-  sharpnessStar?: number;
-  totalStars?: number;
-  width?: number;
-  height?: number;
-  emptyStarColor?: string;
-  fullStarColor?: string;
-};
-
-type IStar = {
-  raw: number;
-  percent: string;
-};
 
 function DynamicStar ({
   rating,
