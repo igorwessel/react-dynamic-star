@@ -1,6 +1,11 @@
 {
   "name": "react-dynamic-star",
   "version": "0.0.0",
+  "description": "Single component to generate dynamic star svg",
+  "main": "./dist/rds.umd.js",
+  "module": "./dist/rds.es.js",
+  "types": "./dist/rds.d.ts",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -10,6 +15,28 @@
     "lint:fix": "yarn lint --fix",
     "type-check": "tsc --project tsconfig.json --pretty --noEmit"
   },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/rds.es.js",
+      "require": "./dist/rds.umd.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igorwessel/react-dynamic-star.git"
+  },
+  "keywords": [
+    "react dynamic star",
+    "react star rating"
+  ],
+  "author": "Igor Wessel",
+  "bugs": {
+    "url": "https://github.com/igorwessel/react-dynamic-star/issues"
+  },
+  "homepage": "https://github.com/igorwessel/react-dynamic-star",
   "peerDependencies": {
     "react": ">=17.x"
   },
