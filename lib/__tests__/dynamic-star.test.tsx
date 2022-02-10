@@ -5,13 +5,13 @@ describe('Without pass props optional props', () => {
   test('should render five star', () => {
     const { container } = render(<DynamicStar rating={5} />)
 
-    expect(container.querySelectorAll('.star-container')).toHaveLength(5)
+    expect(container.querySelectorAll('.dynamic-star-container')).toHaveLength(5)
   })
 
   test('should render five star filled', () => {
     const { container } = render(<DynamicStar rating={5} />)
 
-    const stars = container.querySelectorAll('.star-svg')
+    const stars = container.querySelectorAll('.dynamic-star-svg')
 
     stars.forEach((star) => {
       expect(star).toHaveAttribute(
@@ -25,7 +25,7 @@ describe('Without pass props optional props', () => {
     const rating = 2.5
     const { container } = render(<DynamicStar rating={rating} />)
 
-    const stars = container.querySelectorAll('.star-svg')
+    const stars = container.querySelectorAll('.dynamic-star-svg')
 
     expect(stars[0]).toHaveAttribute(
       'style',
@@ -52,7 +52,7 @@ describe('Without pass props optional props', () => {
   test('when rerender with a new rating, should correcty update in screen stars filled', () => {
     const { container, rerender } = render(<DynamicStar rating={0} />)
 
-    const stars = container.querySelectorAll('.star-svg')
+    const stars = container.querySelectorAll('.dynamic-star-svg')
 
     stars.forEach((star) => {
       expect(star).toHaveAttribute(
@@ -97,7 +97,7 @@ describe('Passing optional props', () => {
       <DynamicStar rating={1} width={50} height={50} />,
     )
 
-    const stars = container.querySelectorAll('.star-svg')
+    const stars = container.querySelectorAll('.dynamic-star-svg')
 
     stars.forEach((star) => {
       expect(star).toHaveAttribute(
@@ -112,7 +112,7 @@ describe('Passing optional props', () => {
       <DynamicStar rating={6.5} totalStars={7} />,
     )
 
-    expect(container.querySelectorAll('.star-svg')).toHaveLength(7)
+    expect(container.querySelectorAll('.dynamic-star-svg')).toHaveLength(7)
   })
 
   test('should outlined a star when pass outlined', () => {
@@ -120,7 +120,7 @@ describe('Passing optional props', () => {
       <DynamicStar rating={5} outlined />,
     )
 
-    const stars = container.querySelectorAll('.star-svg')
+    const stars = container.querySelectorAll('.dynamic-star-svg')
 
     stars.forEach((star) => {
       expect(star).toHaveAttribute('style', expect.not.stringMatching(/stroke: none/))
@@ -130,7 +130,7 @@ describe('Passing optional props', () => {
   test("should use outlined color, when pass outlined with a color (outlined='black')", () => {
     const { container } = render(<DynamicStar rating={5} outlined='black' />)
 
-    const stars = container.querySelectorAll('.star-svg')
+    const stars = container.querySelectorAll('.dynamic-star-svg')
 
     stars.forEach((star) => {
       expect(star).toHaveAttribute(
@@ -143,7 +143,7 @@ describe('Passing optional props', () => {
   test('should change outline width, when pass outlineWidth', () => {
     const { container } = render(<DynamicStar rating={5} outlined='black' outlineWidth={2} />)
 
-    const stars = container.querySelectorAll('.star-svg')
+    const stars = container.querySelectorAll('.dynamic-star-svg')
 
     stars.forEach((star) => {
       expect(star).toHaveAttribute(
@@ -156,14 +156,14 @@ describe('Passing optional props', () => {
   test('when rerender with new totalStars, need to render all stars (removing or adding)', () => {
     const { container, rerender } = render(<DynamicStar rating={6.5} totalStars={7} />)
 
-    expect(container.querySelectorAll('.star-svg')).toHaveLength(7)
+    expect(container.querySelectorAll('.dynamic-star-svg')).toHaveLength(7)
 
     rerender(<DynamicStar rating={3} totalStars={6} />)
 
-    expect(container.querySelectorAll('.star-svg')).toHaveLength(6)
+    expect(container.querySelectorAll('.dynamic-star-svg')).toHaveLength(6)
 
     rerender(<DynamicStar rating={3} totalStars={8} />)
 
-    expect(container.querySelectorAll('.star-svg')).toHaveLength(8)
+    expect(container.querySelectorAll('.dynamic-star-svg')).toHaveLength(8)
   })
 })

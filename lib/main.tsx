@@ -1,7 +1,11 @@
 import * as React from 'react'
 import { useId } from '@/hooks/useId'
 import { IDynamicStarProps, IStar } from '@/types'
-import { createEmptyStar, emptyStar, createFullStar, createStarWithPercentageFilled } from '@/utils'
+import {
+  createEmptyStar,
+  emptyStar,
+} from '@/utils'
+import { reducer } from '@/reducer'
 import './style.css'
 
 function DynamicStar ({
@@ -16,8 +20,10 @@ function DynamicStar ({
   fullStarColor = '#FFBC00',
 }: IDynamicStarProps) {
   const id = useId('star')
-  const [stars, setStars] = React.useState<IStar[]>(
-    Array(totalStars).fill(createEmptyStar()),
+  const internalTotalStars = totalStars < 0 ? 0 : totalStars
+  const [stars, dispatch] = React.useReducer(
+    reducer,
+    Array(internalTotalStars).fill(createEmptyStar()),
   )
 
   const getFullFillColor = (starData: IStar) =>
@@ -64,51 +70,44 @@ function DynamicStar ({
    * Responsible to remove a star when star count changes.
    */
   React.useEffect(() => {
-    const removeStars = totalStars - stars.length
-
-    if (totalStars - stars.length < 0) {
-      setStars((prevState) => [...prevState.slice(0, removeStars)])
+    const removeStars = internalTotalStars - stars.length
+    if (removeStars < 0) {
+      dispatch({
+        type: 'REMOVE_STAR',
+        payload: removeStars,
+      })
     }
-  }, [totalStars, stars.length])
+  }, [internalTotalStars, stars.length])
 
   /**
    * Responsible to add a new star when star count changes.
    */
   React.useEffect(() => {
-    if (totalStars - stars.length > 0) {
-      setStars((prevState) => [
-        ...prevState,
-        ...Array(totalStars - prevState.length).fill(createEmptyStar()),
-      ])
+    const addStars = internalTotalStars - stars.length
+    if (addStars > 0) {
+      dispatch({
+        type: 'ADD_STAR',
+        payload: addStars,
+      })
     }
-  }, [totalStars, stars.length])
+  }, [internalTotalStars, stars.length])
 
   /**
    * Responsible to fill stars
    */
   React.useEffect(() => {
-    const fullStarsCounter = Math.floor(rating)
-
-    const surplus = Math.round((rating % 1) * 10) / 10
-    const roundedOneDecimalPoint = Math.round(surplus * 10) / 10
-
-    setStars((prevState) =>
-      prevState.map((_, index) =>
-        fullStarsCounter >= index + 1
-          ? createFullStar()
-          : rating === index + roundedOneDecimalPoint
-            ? createStarWithPercentageFilled(roundedOneDecimalPoint)
-            : createEmptyStar(),
-      ),
-    )
+    dispatch({
+      type: 'FILL_STAR',
+      payload: typeof rating === 'string' ? parseFloat(rating) : rating,
+    })
   }, [rating, stars.length])
 
   return (
-    <div className='star-rating' aria-label={`${rating} of 5`}>
+    <div className='dynamic-star-rating' aria-label={`${rating} of 5`}>
       {stars.map((star, index) => (
-        <div key={`${id}_${index}`} className='star-container'>
+        <div key={`${id}_${index}`} className='dynamic-star-container'>
           <svg
-            className='star-svg'
+            className='dynamic-star-svg'
             style={{
               fill: `url(#${id}_gradient${star.raw})`,
               stroke:
