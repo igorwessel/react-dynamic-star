@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import tsConfigpaths from 'vite-tsconfig-paths'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
+import libCss from 'vite-plugin-libcss'
 import { EsLinter, linterPlugin } from 'vite-plugin-linter'
 
 // https://vitejs.dev/config/
@@ -14,6 +15,7 @@ export default defineConfig((configEnv) => ({
       include: ['./{lib,src}/**/*.{ts,tsx}'],
       linters: [new EsLinter({ configEnv })],
     }),
+    libCss(),
     dts({
       include: ['lib/main.tsx'],
       beforeWriteFile: (filePath, content) => ({
