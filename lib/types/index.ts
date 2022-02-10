@@ -1,5 +1,5 @@
  type IDynamicStarProps = {
-  rating: number;
+  rating: string | number;
   outlined?: string | boolean;
   outlineWidth?: number;
   sharpnessStar?: number;
