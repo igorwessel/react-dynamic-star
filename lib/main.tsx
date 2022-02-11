@@ -104,11 +104,11 @@ function DynamicStar ({
   }, [rating, stars.length])
 
   return (
-    <div className='star-rating' aria-label={`${rating} of 5`}>
+    <div className='dynamic-star-rating' aria-label={`${rating} of 5`}>
       {stars.map((star, index) => (
-        <div key={`${id}_${index}`} className='star-container'>
+        <div key={`${id}_${index}`} className='dynamic-star-container'>
           <svg
-            className='star-svg'
+            className='dynamic-star-svg'
             style={{
               fill: `url(#${id}_gradient${star.raw})`,
               stroke:
