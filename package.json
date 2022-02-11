@@ -1,6 +1,6 @@
 {
   "name": "react-dynamic-star",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Single component to generate dynamic star svg",
   "main": "./dist/rds.umd.js",
   "module": "./dist/rds.es.js",
