@@ -12,7 +12,7 @@ export default defineConfig((env) => ({
 	plugins: [
 		react(),
 		dts({
-			include: ["lib/main.tsx"],
+			include: ["lib/main.tsx", "lib/types"],
 			beforeWriteFile: (filePath, content) => ({
 				filePath: filePath.replace(/(\/|\\)lib/, "").replace("main", "rds"),
 				content,
