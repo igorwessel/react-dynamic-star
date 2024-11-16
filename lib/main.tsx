@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import { useId } from "@/hooks/useId";
-import type { IDynamicStarProps, IStar } from "@/types";
-import { calcStarPoints, emptyStar, fillStars } from "@/utils";
+import { useId } from "./hooks/useId";
+import type { IDynamicStarProps, IStar } from "./types";
+import { calcStarPoints, emptyStar, fillStars } from "./utils";
 
 function DynamicStar({
 	rating,

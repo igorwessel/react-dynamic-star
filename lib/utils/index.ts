@@ -1,4 +1,4 @@
-import type { IStar } from "@/types";
+import type { IStar } from "../types";
 
 const fullStar = 1;
 const emptyStar = 0;

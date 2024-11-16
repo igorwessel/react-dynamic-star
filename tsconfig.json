@@ -4,7 +4,7 @@
 		"useDefineForClassFields": true,
 		"lib": ["DOM", "DOM.Iterable", "ESNext"],
 		"allowJs": false,
-		"skipLibCheck": false,
+		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"strict": true,
@@ -15,12 +15,8 @@
 		"isolatedModules": true,
 		"noEmit": true,
 		"jsx": "react-jsx",
-		"baseUrl": ".",
-		"paths": {
-			"@/*": ["lib/*"],
-			"react-dynamic-star": ["lib/main.tsx"]
-		}
+		"baseUrl": "."
 	},
 	"include": ["./src", "./lib"],
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules", "./lib/__tests__"]
 }

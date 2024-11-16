@@ -1,4 +1,4 @@
-import { DynamicStar } from "@/main";
+import { DynamicStar } from "../main";
 import { render } from "@testing-library/react";
 
 describe("Without pass props optional props", () => {

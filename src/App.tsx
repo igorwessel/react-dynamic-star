@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { DynamicStar } from "react-dynamic-star";
+import { DynamicStar } from "../lib/main";
 
 function Stars() {
 	const [star, setStar] = React.useState({
